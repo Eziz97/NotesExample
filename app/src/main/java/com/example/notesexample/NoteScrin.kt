@@ -3,6 +3,7 @@ package com.example.notesexample
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.util.Log.println
 import android.widget.EditText
 import android.widget.ImageButton
@@ -15,22 +16,26 @@ class NoteScrin: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.scrin_note)
-        val arrow= findViewById<ImageButton>(R.id.arrow)
+        val arrow = findViewById<ImageButton>(R.id.arrow)
         arrow.setOnClickListener {
             onBackPressed()
         }
 
-       val saveNoteButtom=findViewById<ImageButton>(R.id.saveNoteButtom)
+        val saveNoteButtom = findViewById<ImageButton>(R.id.saveNoteButtom)
         saveNoteButtom.setOnClickListener {
             val date = System.currentTimeMillis()
             val file = File(this.application.filesDir, "$date.txt")
             file.createNewFile()
-            val noteField=findViewById<EditText>(R.id.saveNoteButtom)
-            val noteText= noteField.text.toString()
-            file.appendText(noteText)
-            val readResult = FileInputStream(file).bufferedReader().use { it.readText() }
-            println("readResult=$readResult")
+            val noteField = findViewById<EditText>(R.id.saveNoteButtom)
+            val noteText = noteField.text.toString()
+            val tx1 = findViewById<EditText>(R.id.tx1)
+            val noteTitle = tx1.text.toString()
+            file.appendText("$noteTitle | $noteText")
+            val readResult = FileInputStream(file)
+                .bufferedReader()
+                .use { it.readText() }
+            Log.d("debug", "readResult=$readResult")
 
+        }
     }
-
 }
